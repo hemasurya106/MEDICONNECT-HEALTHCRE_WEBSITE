@@ -142,3 +142,4 @@ wheel==0.44.0
 wrapt==1.16.0
 xyzservices==2024.9.0
 yarl==1.18.3
+gunicorn
