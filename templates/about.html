@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+  <title>About Us - MediConnect</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .top-header {
+      background-color: azure;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .top-header img {
+      height: 100px;
+      margin-right: 15px;
+    }
+    .top-header h1 {
+      font-size: 2rem;
+      color: #072146;
+      margin: 0;
+    }
+
+    .main-nav {
+      background-color: #072146;
+    }
+    .main-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+    .main-nav ul li {
+      margin: 0;
+    }
+    .main-nav ul li a {
+      color: rgb(213, 213, 231);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: large;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .main-nav ul li a:hover {
+      color: #007bff;
+    }
+    .main-nav ul li a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0;
+      height: 2px;
+      background-color: #007bff;
+      transition: width 0.3s ease;
+    }
+    .main-nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .about-us {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .about-us h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #007bff;
+    }
+    .about-us p {
+      font-size: 1.2rem;
+      color: #555;
+    }
+    .content-section {
+      margin: 40px 0;
+    }
+    .content-section h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #007bff;
+    }
+    .content-section p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #555;
+    }
+    .team {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .team-member {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .team-member:hover {
+      transform: scale(1.05);
+    }
+    .team-member img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .team-member h3 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: black;
+      color: white;
+    }
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      background-color: #007bff;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -3px;
+    }
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+      box-sizing: border-box;
+    }
+    .timeline-item.left {
+      left: 0;
+      text-align: right;
+    }
+    .timeline-item.right {
+      left: 50%;
+      text-align: left;
+    }
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background-color: #007bff;
+      border: 3px solid white;
+      top: 20px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .timeline-item.left::after {
+      right: -8px;
+    }
+    .timeline-item.right::after {
+      left: -8px;
+    }
+    .content {
+      padding: 20px 30px;
+      background-color: white;
+      position: relative;
+      border-radius: 6px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+  <style>
+    .main-nav {
+        background: linear-gradient(135deg, #072146 0%, #00172D 100%);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+    }
+
+    .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-decoration: none;
+    }
+
+    .nav-brand img {
+        height: 50px;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-brand:hover img {
+        transform: scale(1.05);
+    }
+
+    .brand-text {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .main-nav ul {
+        max-width: 1200px;
+        margin: 0;
+        padding: 12px 20px;
+        display: flex;
+        position: relative;
+    }
+
+    .main-nav ul li {
+        position: relative;
+        padding: 8px 0;
+    }
+
+    .main-nav ul li a {
+        color: rgba(255,255,255,0.9);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.1rem;
+        padding: 8px 15px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .main-nav ul li a:hover {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .main-nav ul li a.active {
+        background: #007bff;
+        color: white;
+    }
+
+    .main-nav .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        min-width: 220px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        border-radius: 4px;
+        padding: 10px 0;
+    }
+
+    .main-nav li:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-content a {
+        color: #333 !important;
+        padding: 12px 20px !important;
+        font-size: 1rem !important;
+    }
+
+    .dropdown-content a:hover {
+        background: #f8f9fa !important;
+        color: #007bff !important;
+        transform: none !important;
+    }
+
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .menu-toggle {
+            display: block;
+        }
+        
+        .main-nav ul {
+            flex-direction: column;
+            display: none;
+        }
+        
+        .main-nav ul.active {
+            display: flex;
+        }
+    }
+</style>
+<style>
+  .main-footer {
+      background: linear-gradient(135deg, #072146 0%, #00172D 100%);
+      color: white;
+      padding: 60px 0 0;
+      font-family: 'Roboto', sans-serif;
+      position: relative;
+      overflow: hidden;
+  }
+
+  .footer-wave {
+      position: absolute;
+      top: -5px;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23f8f9fa" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%23f8f9fa" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23f8f9fa"/></svg>');
+      background-size: cover;
+  }
+
+  .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      position: relative;
+      z-index: 2;
+  }
+
+  .footer-column h3 {
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
+      font-weight: 500;
+  }
+
+  .footer-column h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 50px;
+      height: 2px;
+      background: #007bff;
+  }
+
+  .footer-links {
+      list-style: none;
+      padding: 0;
+  }
+
+  .footer-links li {
+      margin-bottom: 12px;
+  }
+
+  .footer-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  }
+
+  .footer-links a:hover {
+      color: #00d4ff;
+      transform: translateX(5px);
+  }
+
+  .footer-links i {
+      font-size: 1rem;
+      width: 20px;
+      text-align: center;
+  }
+
+  .footer-contact p {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+  }
+
+  .footer-contact i {
+      margin-top: 3px;
+      color: #007bff;
+  }
+
+  .footer-social {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+  }
+
+  .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+  }
+
+  .social-icon:hover {
+      background: #007bff;
+      transform: translateY(-3px);
+  }
+
+  .footer-bottom {
+      background: rgba(0,0,0,0.2);
+      padding: 20px 0;
+      margin-top: 50px;
+      text-align: center;
+  }
+
+  .footer-bottom-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+  }
+
+  .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+  }
+
+  .footer-logo img {
+      height: 40px;
+  }
+
+  .footer-logo span {
+      font-size: 1.5rem;
+      font-weight: 600;
+  }
+
+  .copyright {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+  }
+
+  .footer-legal {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+  }
+
+  .footer-legal a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.3s ease;
+  }
+
+  .footer-legal a:hover {
+      color: #00d4ff;
+  }
+
+  @media (max-width: 768px) {
+      .footer-content {
+          grid-template-columns: 1fr;
+          gap: 30px;
+      }
+      
+      .footer-column h3 {
+          margin-bottom: 15px;
+      }
+      
+      .footer-social {
+          justify-content: center;
+      }
+  }
+</style>
+</head>
+<body>
+  <nav class="main-nav">
+    <a href="{{ url_for('Home') }}" class="nav-brand">
+        <img src="{{ url_for('static', filename='logo1.png') }}" alt="Hospital Logo">
+        <span class="brand-text">MediConnect</span>
+    </a>
+    
+    <button class="menu-toggle"><i class="bi bi-list"></i></button>
+    <ul>
+        <li><a href="{{ url_for('Home') }}"><i class="bi bi-house-door"></i>Home</a></li>
+        <li><a href="{{ url_for('About') }}" class="active"><i class="bi bi-info-circle"></i>About Us</a></li>
+        <li><a href="{{ url_for('Departments')}}"><i class="bi bi-hospital"></i>Departments <i class="bi bi-chevron-down"></i></a></li>
+        <li><a href="{{ url_for('Contact_Us') }}"><i class="bi bi-telephone"></i>Contact</a></li>
+        <li><a href="{{ url_for('Login') }}"><i class="bi bi-person-circle"></i>Login/Sign Up</a></li>
+    </ul>
+</nav>
+
+  <main>
+    <section class="about-us">
+      <h1>About MediConnect</h1>
+      <p>Committed to providing world-class healthcare services and improving the well-being of our community since 1995.</p>
+    </section>
+
+    <section class="content-section">
+      <h2>Our Journey</h2>
+      <div class="timeline">
+        <div class="timeline-item left">
+          <div class="content">
+            <h3>1995</h3>
+            <p>MedConnect was founded with a vision to revolutionize healthcare.</p>
+          </div>
+        </div>
+        <div class="timeline-item right">
+          <div class="content">
+            <h3>2005</h3>
+            <p>Expanded our services to include specialized departments and cutting-edge technology.</p>
+          </div>
+        </div>
+        <div class="timeline-item left">
+          <div class="content">
+            <h3>2015</h3>
+            <p>Recognized as one of the top healthcare providers in the country.</p>
+          </div>
+        </div>
+        <div class="timeline-item right">
+          <div class="content">
+            <h3>2025</h3>
+            <p>Continuing our mission with advanced AI-assisted diagnostics and personalized care.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Our Mission</h2>
+      <p>To deliver compassionate, patient-centered care with the highest standards of excellence in clinical care, education, and research.</p>
+    </section>
+
+    <section class="content-section">
+      <h2>Our Vision</h2>
+      <p>To be a leading healthcare institution recognized for innovative treatments, advanced technologies, and exceptional patient experiences.</p>
+    </section>
+
+    <section class="content-section">
+      <h2>Our Team</h2>
+      <p>Meet the dedicated professionals who make our mission possible.</p>
+      <div class="team">
+        <div class="team-member" onclick="openModal('Dr. Hema Surya', 'Cardiologist', 'Dr. Hema Surya is a renowned cardiologist with over 3 years of experience in treating complex heart conditions.')">
+          <img src="{{ url_for('static', filename='doctor_2.png') }}" alt="Dr. Hema Surya">
+          <h3>Dr. Hema Surya</h3>
+          <p>Cardiologist</p>
+        </div>
+        <div class="team-member" onclick="openModal('Dr. Jeffrey Rufus', 'Neurologist', 'Dr. Jeffrey Rufus specializes in innovative neurological treatments and has published numerous research papers in the field.')">
+          <img src="{{ url_for('static', filename='doctor_1.png') }}" alt="Dr. Jeffrey Rufus">
+          <h3>Dr. Jeffrey Rufus</h3>
+          <p>Neurologist</p>
+        </div>
+        <div class="team-member" onclick="openModal('Dr. Anirudhan', 'Orthopaedic Surgeon', 'Dr. Anirudhan is an expert in minimally invasive orthopaedic surgeries and sports medicine.')">
+          <img src="{{ url_for('static', filename='doctor_3.png') }}" alt="Dr. Anirudhan">
+          <h3>Dr. Anirudhan</h3>
+          <p>Psychiatry</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalName"></h2>
+      <h3 id="modalTitle"></h3>
+      <p id="modalBio"></p>
+    </div>
+  </div>
+  <footer class="main-footer">
+    <div class="footer-wave"></div>
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+                <li><a href="{{ url_for('Home') }}"><i class="bi bi-house-door"></i> Home</a></li>
+                <li><a href="{{ url_for('About') }}"><i class="bi bi-info-circle"></i> About Us</a></li>
+                <li><a href="{{ url_for('Departments') }}"><i class="bi bi-hospital"></i> Departments</a></li>
+                <li><a href="{{ url_for('Login') }}"><i class="bi bi-calendar-check"></i> Appointments</a></li>
+              <li><a href="{{ url_for('Login') }}"><i class="bi bi-search"></i> Find a Doctor</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-column">
+            <h3>Our Services</h3>
+            <ul class="footer-links">
+                <li><a href="#"><i class="bi bi-heart-pulse"></i> Cardiology</a></li>
+                <li><a href="#"><i class="bi bi-activity"></i> Neurology</a></li>
+                <li><a href="#"><i class="bi bi-person-walking"></i> Orthopedics</a></li>
+                <li><a href="#"><i class="bi bi-eyedropper"></i> Pediatrics</a></li>
+                <li><a href="#"><i class="bi bi-lungs"></i> Pulmonology</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-column">
+            <h3>Contact Us</h3>
+            <div class="footer-contact">
+                <p><i class="bi bi-geo-alt"></i> 123 Medical Drive, Health City, HC 12345</p>
+                <p><i class="bi bi-telephone"></i> +91 1234567890</p>
+                <p><i class="bi bi-envelope"></i> info@mediconnect.com</p>
+                <p><i class="bi bi-clock"></i> Mon-Fri: 8:00 AM - 8:00 PM<br>Sat-Sun: 9:00 AM - 5:00 PM</p>
+                
+                <div class="footer-social">
+                    <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-column">
+            <h3>Health Resources</h3>
+            <ul class="footer-links">
+                <li><a href="#"><i class="bi bi-journal-text"></i> Patient Guides</a></li>
+                <li><a href="#"><i class="bi bi-file-earmark-medical"></i> Health Library</a></li>
+                <li><a href="#"><i class="bi bi-calendar-event"></i> Health Events</a></li>
+                <li><a href="#"><i class="bi bi-newspaper"></i> Medical Blog</a></li>
+                <li><a href="#"><i class="bi bi-question-circle"></i> FAQ</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <div class="footer-bottom-content">
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='logo1.png') }}" alt="MediConnect Logo">
+                <span>MediConnect</span>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 MediConnect Healthcare. All rights reserved.
+            </div>
+            
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">HIPAA Compliance</a>
+                <a href="#">Accessibility</a>
+                <a href="#">Non-Discrimination</a>
+                <a href="#">Sitemap</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+  <script>
+    function openModal(name, title, bio) {
+      var modal = document.getElementById("myModal");
+      document.getElementById("modalName").textContent = name;
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalBio").textContent = bio;
+      modal.style.display = "block";
+    }
+
+    function closeModal() {
+      var modal = document.getElementById("myModal");
+      modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      var modal = document.getElementById("myModal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>

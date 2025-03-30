@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book an Appointment - MediConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --primary: #3a86ff;
+      --primary-dark: #2667cc;
+      --secondary: #8338ec;
+      --dark: #072146;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --light-gray: #e9ecef;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --border-radius: 12px;
+      --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f7ff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Header Styles */
+    .header-container {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(135deg, var(--dark) 0%, #00172D 100%);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 30px;
+      height: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      font-size: 1.5rem;
+      gap: 10px;
+    }
+
+    .brand img {
+      height: 40px;
+      transition: var(--transition);
+    }
+
+    .brand:hover img {
+      transform: rotate(-5deg);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      flex-grow: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .nav-links a.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 15px rgba(58, 134, 255, 0.4);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    /* User Profile */
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .user-profile:hover {
+      transform: translateY(-2px);
+    }
+
+    .initials-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #1d4ed8;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: 2px solid rgba(255,255,255,0.2);
+  text-transform: uppercase;
+}
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .user-role {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.85rem;
+      font-weight: 400;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      min-width: 220px;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 10px 0;
+      z-index: 100;
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    .dropdown-content::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      right: 15px;
+      border-width: 8px;
+      border-style: solid;
+      border-color: transparent transparent white transparent;
+    }
+
+    .dropdown-content a {
+      color: var(--gray);
+      padding: 12px 20px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      background: var(--light-gray);
+      color: var(--primary);
+      padding-left: 25px;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 40px;
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+
+    /* Appointment Form */
+    .appointment-form-container {
+      display: flex;
+      justify-content: center;
+      padding: 40px 0;
+    }
+
+    .appointment-form {
+      background-color: white;
+      padding: 40px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .appointment-form h2 {
+      font-size: 2rem;
+      color: var(--dark);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .appointment-form p {
+      font-size: 1.1rem;
+      color: var(--gray);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 1rem;
+      color: var(--dark);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: var(--border-radius);
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(58, 134, 255, 0.3);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(58, 134, 255, 0.4);
+    }
+
+    /* Footer */
+    .copyright-footer {
+      background: var(--dark);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+
+    .copyright-footer a {
+      color: var(--light);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .copyright-footer a:hover {
+      color: var(--primary);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .main-nav {
+        padding: 0 20px;
+        height: 70px;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .container {
+        padding: 30px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .appointment-form {
+        padding: 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 20px auto;
+      }
+
+      .appointment-form {
+        padding: 25px;
+      }
+
+      .appointment-form h2 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header-container">
+    <nav class="main-nav">
+      <!-- Logo Section -->
+      <a href="{{ url_for('Dashboard') }}" class="brand">
+        <img src="{{ url_for('static', filename='logo1.png') }}" alt="MediConnect">
+        MediConnect
+      </a>
+
+      <!-- Navigation Links -->
+      <div class="nav-links">
+        <a href="{{ url_for('Dashboard') }}">
+          <i class="bi bi-speedometer2"></i>Dashboard
+        </a>
+        <a href="{{ url_for('Patient_Appointments') }}">
+          <i class="bi bi-calendar-check"></i>Appointments
+        </a>
+        <a href="{{ url_for('Book_Appointment') }}" class="active">
+          <i class="bi bi-plus-circle"></i>Book
+        </a>
+        <a href="{{ url_for('Search_Doctor') }}">
+          <i class="bi bi-search"></i>Find Doctors
+        </a>
+      </div>
+
+      <!-- User Profile -->
+      <div class="dropdown">
+        <div class="user-profile">
+          <div class="initials-avatar" id="userAvatar">US</div>
+          <div class="user-info">
+            <span class="user-name"> {{ data['first_name'] }} </span>
+          </div>
+          <i class="bi bi-chevron-down" style="color: rgba(255,255,255,0.6);"></i>
+        </div>
+        <div class="dropdown-content">
+          <a href="{{ url_for('Profile') }}">
+            <i class="bi bi-person"></i>Profile
+          </a>
+          <a href="{{ url_for('Logout') }}">
+            <i class="bi bi-box-arrow-right"></i>Logout
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="appointment-form-container">
+      <form class="appointment-form" action="/Book_Appointment" method="POST">
+        <h2>Book an Appointment</h2>
+        <p>Fill out the form below to schedule your appointment</p>
+
+        <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" id="first_name" name="first_name" placeholder="Enter your first name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input type="text" id="last_name" name="last_name" placeholder="Enter your last name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="doctor">Select Doctor</label>
+          <select id="doctor" name="doctor" required>
+            <option value="" disabled selected>Select a doctor</option>
+            {% for doctor in doctors %}
+            <option value="{{ doctor.d_id }}">Dr. {{ doctor.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Appointment Date</label>
+          <input type="date" id="date" name="date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="time">Appointment Time</label>
+          <input type="time" id="time" name="time" required>
+        </div>
+
+        <div class="form-group">
+          <label for="info">Additional Information (Optional)</label>
+          <textarea id="info" name="info" placeholder="Any special requirements or notes"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <i class="bi bi-calendar-plus"></i> Book Appointment
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="copyright-footer">
+    &copy; 2025 MediConnect. All rights reserved. | 
+    <a href="#">Privacy Policy</a> | 
+    <a href="#">Terms of Service</a>
+  </div>
+  <script>
+    let dropdownTimeout;
+  
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdown = document.querySelector(".dropdown");
+      const dropdownContent = document.querySelector(".dropdown-content");
+  
+      dropdown.addEventListener("mouseenter", function () {
+        clearTimeout(dropdownTimeout); // Clear the timeout if user hovers back
+        dropdownContent.style.display = "block"; // Show dropdown
+      });
+  
+      dropdown.addEventListener("mouseleave", function () {
+        dropdownTimeout = setTimeout(function () {
+          dropdownContent.style.display = "none"; // Hide dropdown after delay
+        }, 500); // Adjust time in milliseconds (e.g., 500ms = 0.5s)
+      });
+  
+      dropdownContent.addEventListener("mouseenter", function () {
+        clearTimeout(dropdownTimeout); // Keep it visible when inside dropdown
+      });
+  
+      dropdownContent.addEventListener("mouseleave", function () {
+        dropdownTimeout = setTimeout(function () {
+          dropdownContent.style.display = "none"; // Hide when mouse leaves
+        }, 500);
+      });
+    });
+  </script>
+
+  <script>
+    
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      updateUserAvatar();
+      
+      // Set minimum date to today
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('date').min = today;
+    });
+  </script>
+</body>
+</html>

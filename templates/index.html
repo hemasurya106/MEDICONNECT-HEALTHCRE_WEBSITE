@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Homepage</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+  
+  
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    h6{
+      font-size: 50px;
+      color: rgb(28, 168, 12);
+      font-weight: 300;
+    }
+    .bot-message {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+    .top-header {
+      background-color: azure;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .top-header img {
+      height: 100px;
+      margin-right: 15px;
+    }
+    .top-header h1 {
+      font-size: 2rem;
+      color: #072146;
+      margin: 0;
+    }
+
+    .main-nav {
+      background-color: #072146;
+    }
+    .main-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+    .main-nav ul li {
+      margin: 0;
+    }
+    .main-nav ul li a {
+      color: rgb(213, 213, 231);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: large;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .main-nav ul li a:hover {
+      color: #007bff;
+    }
+    .main-nav ul li a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0;
+      height: 2px;
+      background-color: #007bff;
+      transition: width 0.3s ease;
+    }
+    .main-nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .slideshow-container {
+      position: relative;
+      max-width: 100%;
+      margin: auto;
+      overflow: hidden;
+    }
+    .slideshow-container img {
+      height: 500px;
+      width: 100%;
+      object-fit: absolute;
+    }
+    .slide {
+      display: none;
+      position: relative;
+    }
+    .caption {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    .chat-container {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 350px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        z-index: 9999;
+        display: none;
+        flex-direction: column;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .chat-container.visible {
+        display: flex;
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .chat-header {
+      background: #072146;
+      color: white;
+      padding: 15px;
+      border-radius: 10px 10px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chat-messages {
+      height: 300px;
+      overflow-y: auto;
+      padding: 15px;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .chat-input {
+      display: flex;
+      padding: 15px;
+      border-top: 1px solid #ddd;
+    }
+    #chatInput {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+    .chat-toggle {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: linear-gradient(135deg, #007bff, #00d4ff);
+        color: white;
+        border: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+        z-index: 9998;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    .chat-toggle:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 12px 30px rgba(0, 123, 255, 0.4);
+    }
+
+    .user-message {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 15px;
+      align-self: flex-end;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      max-width: 80%;
+    }
+    .bot-message {
+      background: #e3f2fd;
+      padding: 8px 12px;
+      border-radius: 15px;
+      align-self: flex-start;
+      max-width: 80%;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .appointment {
+      text-align: center;
+      padding: 20px;
+    }
+    .appointment h5 {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+    .appointment button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 25px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    .appointment button:hover {
+      background-color: #0056b3;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: black;
+      color: white;
+      margin-top: auto;
+    }
+  </style>
+  <style>
+    .main-nav {
+        background: linear-gradient(135deg, #072146 0%, #00172D 100%);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+    }
+  
+    .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-decoration: none;
+    }
+  
+    .nav-brand img {
+        height: 50px;
+        transition: transform 0.3s ease;
+    }
+  
+    .nav-brand:hover img {
+        transform: scale(1.05);
+    }
+  
+    .brand-text {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+  
+    .main-nav ul {
+        max-width: 1200px;
+        margin: 0;
+        padding: 12px 20px;
+        display: flex;
+        position: relative;
+    }
+  
+    .main-nav ul li {
+        position: relative;
+        padding: 8px 0;
+    }
+  
+    .main-nav ul li a {
+        color: rgba(255,255,255,0.9);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.1rem;
+        padding: 8px 15px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+  
+    .main-nav ul li a:hover {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+  
+    .main-nav ul li a.active {
+        background: #007bff;
+        color: white;
+    }
+  
+    .main-nav .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        min-width: 220px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        border-radius: 4px;
+        padding: 10px 0;
+    }
+  
+    .main-nav li:hover .dropdown-content {
+        display: block;
+    }
+  
+    .dropdown-content a {
+        color: #333 !important;
+        padding: 12px 20px !important;
+        font-size: 1rem !important;
+    }
+  
+    .dropdown-content a:hover {
+        background: #f8f9fa !important;
+        color: #007bff !important;
+        transform: none !important;
+    }
+  
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+  
+    @media (max-width: 768px) {
+        .menu-toggle {
+            display: block;
+        }
+        
+        .main-nav ul {
+            flex-direction: column;
+            display: none;
+        }
+        
+        .main-nav ul.active {
+            display: flex;
+        }
+    }
+  </style>
+  <style>
+    .medical-services {
+        padding: 40px 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .service-card {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+
+    .service-card img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .service-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .service-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 100%);
+        color: white;
+        padding: 30px 20px 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .service-card:hover .service-overlay {
+        opacity: 1;
+    }
+
+    .service-title {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .service-title i {
+        color: #007bff;
+    }
+
+    .service-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+        .services-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .service-card img {
+            height: 250px;
+        }
+    }
+</style>
+<style>
+  .faq-section {
+        position: relative;
+        z-index: 1;
+    }
+
+  .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+  }
+
+  .faq-header {
+      text-align: center;
+      margin-bottom: 60px;
+  }
+
+  .faq-header h2 {
+      font-size: 2.8rem;
+      color: #072146;
+      margin-bottom: 20px;
+      font-weight: 300;
+      letter-spacing: 1px;
+      position: relative;
+  }
+
+  .faq-header h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #007bff, #00d4ff);
+  }
+
+  .faq-header p {
+      color: #6c757d;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+  }
+
+  .faq-accordion {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+  }
+
+  .faq-item {
+      background: white;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-item:last-child {
+      border-bottom: none;
+  }
+
+  .faq-question {
+      padding: 25px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+  }
+
+  .faq-question:hover {
+      background: rgba(0,123,255,0.03);
+  }
+
+  .faq-question h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #072146;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      position: relative;
+      padding-left: 35px;
+  }
+
+  .faq-question h3::before {
+      content: 'Q';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #007bff;
+      font-weight: 700;
+      font-size: 1rem;
+      background: rgba(0,123,255,0.1);
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .faq-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #007bff, #00d4ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+  }
+
+  .faq-answer {
+      padding: 0 30px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-answer-content {
+      padding: 0 0 30px 35px;
+      color: #6c757d;
+      line-height: 1.8;
+      position: relative;
+  }
+
+  .faq-answer-content::before {
+      content: 'A';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #28a745;
+      font-weight: 700;
+      font-size: 1rem;
+      background: rgba(40,167,69,0.1);
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .faq-item.active .faq-answer {
+      max-height: 500px;
+  }
+
+  .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+      background: linear-gradient(135deg, #ff4d4d, #f39c12);
+  }
+
+  .faq-contact {
+      text-align: center;
+      margin-top: 60px;
+      padding: 40px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+  }
+
+  .faq-contact::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, #007bff, #00d4ff);
+  }
+
+  .faq-contact h3 {
+      font-size: 1.8rem;
+      color: #072146;
+      margin-bottom: 15px;
+      font-weight: 300;
+  }
+
+  .faq-contact p {
+      color: #6c757d;
+      max-width: 600px;
+      margin: 0 auto 25px;
+      line-height: 1.6;
+  }
+
+  .contact-button {
+      display: inline-block;
+      padding: 14px 35px;
+      background: linear-gradient(135deg, #007bff, #00d4ff);
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+  }
+
+  .contact-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,123,255,0.4);
+  }
+
+  .contact-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+  }
+
+  .contact-button:hover::before {
+      left: 100%;
+  }
+
+  @media (max-width: 768px) {
+      .faq-header h2 {
+          font-size: 2.2rem;
+      }
+      
+      .faq-question {
+          padding: 20px;
+      }
+      
+      .faq-question h3 {
+          font-size: 1.1rem;
+      }
+      
+      .faq-contact {
+          padding: 30px 20px;
+      }
+  }
+</style>
+<style>
+  .main-footer {
+      background: linear-gradient(135deg, #072146 0%, #00172D 100%);
+      color: white;
+      padding: 60px 0 0;
+      font-family: 'Roboto', sans-serif;
+      position: relative;
+      overflow: hidden;
+  }
+
+  .footer-wave {
+      position: absolute;
+      top: -5px;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23f8f9fa" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%23f8f9fa" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23f8f9fa"/></svg>');
+      background-size: cover;
+  }
+
+  .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      position: relative;
+      z-index: 2;
+  }
+
+  .footer-column h3 {
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+      position: relative;
+      padding-bottom: 10px;
+      font-weight: 500;
+  }
+
+  .footer-column h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 50px;
+      height: 2px;
+      background: #007bff;
+  }
+
+  .footer-links {
+      list-style: none;
+      padding: 0;
+  }
+
+  .footer-links li {
+      margin-bottom: 12px;
+  }
+
+  .footer-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  }
+
+  .footer-links a:hover {
+      color: #00d4ff;
+      transform: translateX(5px);
+  }
+
+  .footer-links i {
+      font-size: 1rem;
+      width: 20px;
+      text-align: center;
+  }
+
+  .footer-contact p {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+  }
+
+  .footer-contact i {
+      margin-top: 3px;
+      color: #007bff;
+  }
+
+  .footer-social {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+  }
+
+  .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+  }
+
+  .social-icon:hover {
+      background: #007bff;
+      transform: translateY(-3px);
+  }
+
+  .footer-bottom {
+      background: rgba(0,0,0,0.2);
+      padding: 20px 0;
+      margin-top: 50px;
+      text-align: center;
+  }
+
+  .footer-bottom-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+  }
+
+  .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+  }
+
+  .footer-logo img {
+      height: 40px;
+  }
+
+  .footer-logo span {
+      font-size: 1.5rem;
+      font-weight: 600;
+  }
+
+  .copyright {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+  }
+
+  .footer-legal {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+  }
+
+  .footer-legal a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.3s ease;
+  }
+
+  .footer-legal a:hover {
+      color: #00d4ff;
+  }
+
+  @media (max-width: 768px) {
+      .footer-content {
+          grid-template-columns: 1fr;
+          gap: 30px;
+      }
+      
+      .footer-column h3 {
+          margin-bottom: 15px;
+      }
+      
+      .footer-social {
+          justify-content: center;
+      }
+  }
+</style>
+
+</head>
+<body>
+  <nav class="main-nav">
+    <a href="{{ url_for('Home') }}" class="nav-brand">
+        <img src="{{ url_for('static', filename='logo1.png') }}" alt="Hospital Logo">
+        <span class="brand-text">MediConnect</span>
+    </a>
+    
+    <button class="menu-toggle"><i class="bi bi-list"></i></button>
+    <ul>
+        <li><a href="{{ url_for('Home') }}" class="active"><i class="bi bi-house-door"></i>Home</a></li>
+        <li><a href="{{ url_for('About') }}"><i class="bi bi-info-circle"></i>About Us</a></li>
+        <li><a href="{{ url_for('Departments')}}"><i class="bi bi-hospital"></i>Departments <i class="bi bi-chevron-down"></i></a></li>
+        <li><a href="{{ url_for('Contact_Us') }}"><i class="bi bi-telephone"></i>Contact</a></li>
+        <li><a href="{{ url_for('Login') }}"><i class="bi bi-person-circle"></i>Login/Sign Up</a></li>
+    </ul>
+</nav>
+  <main>
+    <section class="medconnect">
+      <div class="slideshow-container">
+        <div class="slide">
+          <img src="{{ url_for('static', filename='index_1.jpg') }}" alt="Cardiology">
+          <div class="caption">Cardiology</div>
+        </div>
+        <div class="slide">
+          <img src="{{ url_for('static', filename='index_2.jpg') }}" alt="Neurology">
+          <div class="caption">Neurology</div>
+        </div>
+        <div class="slide">
+          <img src="{{ url_for('static', filename='index_3.jpg') }}" alt="Orthopaedics">
+          <div class="caption">Orthopaedics</div>
+        </div>
+      </div>
+    </section>
+    <div class="medical-services">
+      <center><h6>Taking care of your health</h6></center>
+      <div class="services-grid">
+          <div class="service-card">
+              <img src="{{ url_for('static', filename='image.png') }}" alt="Advanced Medical Care">
+              <div class="service-overlay">
+                  <div class="service-title">
+                      <i class="bi bi-heart-pulse"></i>
+                      Cardiac Wellness
+                  </div>
+                  <p class="service-description">
+                      Comprehensive heart care with cutting-edge technology 
+                      and personalized treatment plans.
+                  </p>
+              </div>
+          </div>
+  
+          <div class="service-card">
+              <img src="{{ url_for('static', filename='image copy.png') }}" alt="Neurological Solutions">
+              <div class="service-overlay">
+                  <div class="service-title">
+                      <i class="bi bi-activity"></i>
+                      Brain Health
+                  </div>
+                  <p class="service-description">
+                      Advanced neurological diagnostics and innovative 
+                      treatment approaches for optimal brain function.
+                  </p>
+              </div>
+          </div>
+  
+          <div class="service-card">
+              <img src="{{ url_for('static', filename='image copy 2.png') }}" alt="Orthopedic Excellence">
+              <div class="service-overlay">
+                  <div class="service-title">
+                      <i class="bi bi-bone"></i>
+                      Mobility Care
+                  </div>
+                  <p class="service-description">
+                      State-of-the-art orthopedic solutions for joint health 
+                      and musculoskeletal rehabilitation.
+                  </p>
+              </div>
+          </div>
+      </div>
+  </div>
+
+    <div class="chat-container" id="chatContainer">
+      <div class="chat-header">
+        <h3>MediConnect Assistant</h3>
+        <button class="close-btn" id="closeChat">×</button>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Type your message...">
+        <button id="sendMessageBtn">Send</button>
+      </div>
+    </div>
+    <button class="chat-toggle" id="chatToggle">💬</button>
+
+    <section class="appointment">
+      <h5>Want to have Consultation with our Doctors?</h5>
+      <a href="{{ url_for('Login') }}"><button>Book Appointment</button></a>
+    </section>
+  </main>
+  <div class="faq-section">
+    <div class="faq-container">
+        <div class="faq-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Find answers to common questions about our services, appointments, and patient care</p>
+        </div>
+        
+        <div class="faq-accordion">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How do I prepare for my first appointment at MediConnect?</h3>
+                    <div class="faq-icon">+</div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>For your first visit, please arrive 20 minutes early to complete registration. Bring your insurance card, photo ID, medical records if transferring care, and a list of current medications. Our patient portal allows you to complete forms online before your visit to save time.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What distinguishes MediConnect's approach to patient care?</h3>
+                    <div class="faq-icon">+</div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>We practice precision medicine with a holistic approach, combining cutting-edge technology with personalized care plans. Our multidisciplinary teams collaborate to address all aspects of your health, and we offer same-day appointments for urgent needs with your primary care physician whenever possible.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How does MediConnect ensure patient data privacy?</h3>
+                    <div class="faq-icon">+</div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>We employ enterprise-grade encryption, strict access controls, and regular security audits compliant with HIPAA and GDPR standards. Our electronic health records system is certified for the highest security protocols, and we offer biometric authentication for patient portal access.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What concierge services are available for executive health patients?</h3>
+                    <div class="faq-icon">+</div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>Our executive health program includes 24/7 physician access, comprehensive same-day health evaluations, travel medicine consultations, private suites for examinations, and coordination with specialists worldwide. Members receive priority scheduling and customized wellness plans with nutrition and fitness specialists.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How does MediConnect integrate technology into patient care?</h3>
+                    <div class="faq-icon">+</div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>We utilize AI-assisted diagnostics, wearable health monitor integration, telemedicine with augmented reality consultations, and blockchain-secured health records. Our smart hospital infrastructure enables real-time monitoring of inpatients and predictive analytics for preventive care recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-contact">
+            <h3>Personalized Assistance Available</h3>
+            <p>Our patient care coordinators are available around the clock to address any additional questions or special requests you may have.</p>
+            <a href="{{ url_for('Contact_Us') }}" class="contact-button">Contact Our Support Team</a>
+        </div>
+    </div>
+</div>
+<footer class="main-footer">
+  <div class="footer-wave"></div>
+  <div class="footer-content">
+      <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+              <li><a href="{{ url_for('Home') }}"><i class="bi bi-house-door"></i> Home</a></li>
+              <li><a href="{{ url_for('About') }}"><i class="bi bi-info-circle"></i> About Us</a></li>
+              <li><a href="{{ url_for('Departments') }}"><i class="bi bi-hospital"></i> Departments</a></li>
+              <li><a href="{{ url_for('Login') }}"><i class="bi bi-calendar-check"></i> Appointments</a></li>
+              <li><a href="{{ url_for('Login') }}"><i class="bi bi-search"></i> Find a Doctor</a></li>
+          </ul>
+      </div>
+      
+      <div class="footer-column">
+          <h3>Our Services</h3>
+          <ul class="footer-links">
+              <li><a href="#"><i class="bi bi-heart-pulse"></i> Cardiology</a></li>
+              <li><a href="#"><i class="bi bi-activity"></i> Neurology</a></li>
+              <li><a href="#"><i class="bi bi-person-walking"></i> Orthopedics</a></li>
+              <li><a href="#"><i class="bi bi-eyedropper"></i> Pediatrics</a></li>
+              <li><a href="#"><i class="bi bi-lungs"></i> Pulmonology</a></li>
+          </ul>
+      </div>
+      
+      <div class="footer-column">
+          <h3>Contact Us</h3>
+          <div class="footer-contact">
+              <p><i class="bi bi-geo-alt"></i> 123 Medical Drive, Health City, HC 12345</p>
+              <p><i class="bi bi-telephone"></i> +91 1234567890</p>
+              <p><i class="bi bi-envelope"></i> info@mediconnect.com</p>
+              <p><i class="bi bi-clock"></i> Mon-Fri: 8:00 AM - 8:00 PM<br>Sat-Sun: 9:00 AM - 5:00 PM</p>
+              
+              <div class="footer-social">
+                  <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                  <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+                  <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                  <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+                  <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+              </div>
+          </div>
+      </div>
+      
+      <div class="footer-column">
+          <h3>Health Resources</h3>
+          <ul class="footer-links">
+              <li><a href="#"><i class="bi bi-journal-text"></i> Patient Guides</a></li>
+              <li><a href="#"><i class="bi bi-file-earmark-medical"></i> Health Library</a></li>
+              <li><a href="#"><i class="bi bi-calendar-event"></i> Health Events</a></li>
+              <li><a href="#"><i class="bi bi-newspaper"></i> Medical Blog</a></li>
+              <li><a href="#"><i class="bi bi-question-circle"></i> FAQ</a></li>
+          </ul>
+      </div>
+  </div>
+  
+  <div class="footer-bottom">
+      <div class="footer-bottom-content">
+          <div class="footer-logo">
+              <img src="{{ url_for('static', filename='logo1.png') }}" alt="MediConnect Logo">
+              <span>MediConnect</span>
+          </div>
+          
+          <div class="copyright">
+              &copy; 2025 MediConnect Healthcare. All rights reserved.
+          </div>
+          
+          <div class="footer-legal">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+              <a href="#">HIPAA Compliance</a>
+              <a href="#">Accessibility</a>
+              <a href="#">Non-Discrimination</a>
+              <a href="#">Sitemap</a>
+          </div>
+      </div>
+  </div>
+</footer>
+
+  <script>
+    let slideIndex = 0;
+    function showSlides() {
+      const slides = document.querySelectorAll(".slide");
+      slides.forEach(slide => slide.style.display = "none");
+      slideIndex = (slideIndex + 1) % slides.length;
+      slides[slideIndex].style.display = "block";
+      setTimeout(showSlides, 3000);
+    }
+    document.addEventListener("DOMContentLoaded", showSlides);
+
+    // Chat functionality
+    const chatToggle = document.getElementById('chatToggle');
+    const chatContainer = document.getElementById('chatContainer');
+    const closeChat = document.getElementById('closeChat');
+
+    chatToggle.addEventListener('click', () => {
+      chatContainer.classList.add('visible');
+    });
+
+    closeChat.addEventListener('click', () => {
+      chatContainer.classList.remove('visible');
+    });
+
+    function addMessage(text, type) {
+      const chatMessages = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = type === 'user' ? 'user-message' : 'bot-message';
+      messageDiv.textContent = text;
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    document.getElementById('sendMessageBtn').addEventListener('click', async () => {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      
+      if (message) {
+        addMessage(message, 'user');
+        input.value = '';
+        
+        try {
+          const response = await fetch('/chatbot', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ message })
+          });
+
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          
+          const data = await response.json();
+          if (!data.reply) throw new Error('Empty response from server');
+          
+          addMessage(data.reply, 'bot');
+        } catch (error) {
+          console.error('Chat error:', error);
+          addMessage(`Assistant unavailable: ${error.message}`, 'bot');
+        }
+      }
+    });
+
+    // Handle Enter key
+    document.getElementById('chatInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        document.getElementById('sendMessageBtn').click();
+      }
+    });
+  </script>
+  <script>
+    // Mobile menu toggle
+    document.querySelector('.menu-toggle').addEventListener('click', () => {
+        document.querySelector('.main-nav ul').classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropdown')) {
+            document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+                dropdown.style.display = 'none';
+            });
+        }
+    });
+
+    // Add active class to current page link
+    const currentPage = window.location.pathname;
+    document.querySelectorAll('.main-nav a').forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        }
+    });
+     // Enhanced FAQ Functionality
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Close all items first
+            document.querySelectorAll('.faq-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Open current if wasn't active
+            if (!isActive) {
+                item.classList.add('active');
+                
+                // Smooth scroll to center the opened item
+                setTimeout(() => {
+                    item.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }, 300);
+            }
+        });
+    });
+
+    // Open first item by default
+    document.querySelector('.faq-item').classList.add('active');
+</script>
+</body>
+</html>

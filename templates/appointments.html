@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Appointments - MediConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --primary: #3a86ff;
+      --primary-dark: #2667cc;
+      --secondary: #8338ec;
+      --dark: #072146;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --light-gray: #e9ecef;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --border-radius: 12px;
+      --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f7ff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 40px;
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+
+    /* Header Styles */
+    .header-container {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(135deg, var(--dark) 0%, #00172D 100%);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 30px;
+      height: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      font-size: 1.5rem;
+      gap: 10px;
+    }
+
+    .brand img {
+      height: 40px;
+      transition: var(--transition);
+    }
+
+    .brand:hover img {
+      transform: rotate(-5deg);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      flex-grow: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .nav-links a.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 15px rgba(58, 134, 255, 0.4);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    /* User Profile */
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .user-profile:hover {
+      transform: translateY(-2px);
+    }
+
+    .initials-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #1d4ed8;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: 2px solid rgba(255,255,255,0.2);
+  text-transform: uppercase;
+}
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .user-role {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.85rem;
+      font-weight: 400;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      min-width: 220px;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 10px 0;
+      z-index: 100;
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    .dropdown-content::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      right: 15px;
+      border-width: 8px;
+      border-style: solid;
+      border-color: transparent transparent white transparent;
+    }
+
+    .dropdown-content a {
+      color: var(--gray);
+      padding: 12px 20px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      background: var(--light-gray);
+      color: var(--primary);
+      padding-left: 25px;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Appointment Cards */
+    .appointments {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    .appointment-card {
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 230px;
+    }
+    .appointment-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+    }
+    .appointment-card h3 {
+      font-size: 1.7rem;
+      color: #34495e;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+    .appointment-card p {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: #7f8c8d;
+    }
+    .appointment-card .date {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #16a085;
+    }
+    .appointment-card .location {
+      font-size: 1.1rem;
+      color: #2980b9;
+    }
+    .appointment-card .buttons {
+      display: flex;
+      gap: 20px;
+      margin-top: auto;
+      align-self: flex-end;
+    }
+    .appointment-card button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-size: 1rem;
+    }
+    .appointment-card button:hover {
+      background-color: #2980b9;
+      transform: scale(1.05);
+    }
+  
+    /* Past Appointments */
+    .past-appointments {
+      margin-bottom: 50px;
+    }
+    .past-appointments h2 {
+      font-size: 2rem;
+      color: #34495e;
+      margin-bottom: 25px;
+      font-weight: 700;
+    }
+    .past-appointments .appointments {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    .past-appointments .see-more {
+      display: inline-block;
+      font-size: 1.1rem;
+      color: #3498db;
+      cursor: pointer;
+      margin-top: 30px;
+      text-decoration: underline;
+    }
+    .past-appointments .see-more:hover {
+      color: #2980b9;
+    }
+    .hidden-past-appointments {
+      max-height: 0; 
+      overflow: hidden; 
+      transition: max-height 0.5s ease;
+    }
+    .hidden-past-appointments.show {
+      max-height: 2000px;
+    }
+
+    /* Footer */
+    .copyright-footer {
+      background: var(--dark);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+
+    .copyright-footer a {
+      color: var(--light);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .copyright-footer a:hover {
+      color: var(--primary);
+    }
+  
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .appointments {
+        grid-template-columns: 1fr;
+      }
+      .appointment-card h3 {
+        font-size: 1.6rem;
+      }
+      .appointment-card p {
+        font-size: 1rem;
+      }
+      .appointment-card .buttons {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+  
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1001;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      overflow-y: auto;
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+      position: relative;
+      animation: modalFadeIn 0.3s ease-out;
+    }
+    
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.5rem;
+      color: var(--gray);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    
+    .close-modal:hover {
+      color: var(--danger);
+    }
+    
+    .modal-header {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--light-gray);
+    }
+    
+    .modal-header h3 {
+      font-size: 1.5rem;
+      color: var(--dark);
+    }
+    
+    .modal-body {
+      margin-bottom: 25px;
+    }
+    
+    .modal-row {
+      display: flex;
+      margin-bottom: 15px;
+    }
+    
+    .modal-label {
+      font-weight: 600;
+      color: var(--dark);
+      min-width: 120px;
+    }
+    
+    .modal-value {
+      color: var(--gray);
+      flex-grow: 1;
+    }
+    
+    .comments-section {
+      background-color: var(--light);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    
+    .comments-section h4 {
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+    
+    .comments-content {
+      color: var(--gray);
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    /* Loading State */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      grid-column: 1 / -1;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(58, 134, 255, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Existing head content -->
+  <style>
+    /* Add loading animation styles */
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading svg {
+      width: 100px;
+      height: 100px;
+    }
+
+    #back {
+      fill: none;
+      stroke: var(--light-gray);
+      stroke-width: 2;
+    }
+
+    #front {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 2;
+      stroke-dasharray: 142;
+      stroke-dashoffset: 142;
+      animation: draw 1.5s infinite linear;
+    }
+
+    @keyframes draw {
+      from {
+        stroke-dashoffset: 142;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Add fade-out animation */
+    .loading.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading" id="loading">
+    <svg width="64px" height="48px">
+      <polyline points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24" id="back"></polyline>
+      <polyline points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24" id="front"></polyline>
+    </svg>
+  </div>
+
+  <!-- Rest of your existing body content -->
+
+  <script>
+    // Add this JavaScript at the end of your existing script
+    window.addEventListener('load', function() {
+      const loading = document.getElementById('loading');
+      // Add hide class after 500ms to allow initial animation
+      setTimeout(() => {
+        loading.classList.add('hide');
+        // Remove element after animation completes
+        setTimeout(() => {
+          loading.remove();
+        }, 500);
+      }, 500);
+    });
+  </script>
+</body>
+</html>
+<body>
+  <!-- Header -->
+  <div class="header-container">
+    <nav class="main-nav">
+      <!-- Logo Section -->
+      <a href="{{ url_for('Dashboard') }}" class="brand">
+        <img src="{{ url_for('static', filename='logo1.png') }}" alt="MediConnect">
+        MediConnect
+      </a>
+
+      <!-- Navigation Links -->
+      <div class="nav-links">
+        <a href="{{ url_for('Dashboard') }}">
+          <i class="bi bi-speedometer2"></i>Dashboard
+        </a>
+        <a href="{{ url_for('Patient_Appointments') }}" class="active">
+          <i class="bi bi-calendar-check"></i>Appointments
+        </a>
+        <a href="{{ url_for('Book_Appointment') }}">
+          <i class="bi bi-plus-circle"></i>Book
+        </a>
+        <a href="{{ url_for('Search_Doctor') }}">
+          <i class="bi bi-search"></i>Find Doctors
+        </a>
+      </div>
+
+      <!-- User Profile -->
+      <div class="dropdown">
+        <div class="user-profile">
+          <div class="initials-avatar" id="userAvatar">US</div>
+          <div class="user-info">
+            <span class="user-name"> {{ data['first_name'] }} </span>
+          </div>
+          <i class="bi bi-chevron-down" style="color: rgba(255,255,255,0.6);"></i>
+        </div>
+        <div class="dropdown-content">
+          <a href="{{ url_for('Profile') }}">
+            <i class="bi bi-person"></i>Profile
+          </a>
+          <a href="{{ url_for('Logout') }}">
+            <i class="bi bi-box-arrow-right"></i>Logout
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+  
+  <center><div class="container">
+    <header class="content-header">
+      <h1>My Appointments</h1>
+      <p>View and manage your upcoming and past appointments</p>
+    </header>
+
+    <!-- Upcoming Appointments Section -->
+    <section class="upcoming-appointments">
+      <h2>Upcoming Appointments</h2>
+      <div class="appointments" id="upcoming-appointments">
+        <!-- Appointment Cards will be dynamically loaded here -->
+        <div class="loading" id="loading-upcoming">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Past Appointments Section -->
+    <section class="past-appointments">
+      <h2>Past Appointments</h2>
+      <div class="appointments" id="past-appointments">
+        <!-- Past Appointment Cards will be dynamically loaded here -->
+        <div class="loading" id="loading-past">
+          <div class="spinner"></div>
+        </div>
+      </div>
+      <p class="see-more" onclick="showMorePastAppointments()"></p>
+    </section>
+
+    <!-- Hidden Past Appointments (Initially hidden with JavaScript) -->
+    <section class="hidden-past-appointments">
+      <div class="appointments" id="hidden-past-appointments">
+        <!-- More Past Appointment Cards will be dynamically loaded here -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Appointment Details Modal -->
+  <div id="appointmentModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div class="modal-header">
+        <h3>Appointment Details</h3>
+      </div>
+      <div class="modal-body">
+        <div class="modal-row">
+          <span class="modal-label">Doctor:</span>
+          <span class="modal-value" id="modal-doctor"></span>
+        </div>
+        <div class="modal-row">
+          <span class="modal-label">Specialty:</span>
+          <span class="modal-value" id="modal-specialty"></span>
+        </div>
+        <div class="modal-row">
+          <span class="modal-label">Date:</span>
+          <span class="modal-value" id="modal-date"></span>
+        </div>
+        <div class="modal-row">
+          <span class="modal-label">Status:</span>
+          <span class="modal-value" id="modal-status"></span>
+        </div>
+        <div class="comments-section">
+          <h4>Comments:</h4>
+          <div class="comments-content" id="modal-comments"></div>
+        </div>
+      </div>
+    </div>
+  </div></center>
+
+  <!-- Footer -->
+  <div class="copyright-footer">
+    &copy; 2025 MediConnect. All rights reserved. | 
+    <a href="#">Privacy Policy</a> | 
+    <a href="#">Terms of Service</a>
+  </div>
+  <script>
+    let dropdownTimeout;
+  
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdown = document.querySelector(".dropdown");
+      const dropdownContent = document.querySelector(".dropdown-content");
+  
+      dropdown.addEventListener("mouseenter", function () {
+        clearTimeout(dropdownTimeout); // Clear the timeout if user hovers back
+        dropdownContent.style.display = "block"; // Show dropdown
+      });
+  
+      dropdown.addEventListener("mouseleave", function () {
+        dropdownTimeout = setTimeout(function () {
+          dropdownContent.style.display = "none"; // Hide dropdown after delay
+        }, 500); // Adjust time in milliseconds (e.g., 500ms = 0.5s)
+      });
+  
+      dropdownContent.addEventListener("mouseenter", function () {
+        clearTimeout(dropdownTimeout); // Keep it visible when inside dropdown
+      });
+  
+      dropdownContent.addEventListener("mouseleave", function () {
+        dropdownTimeout = setTimeout(function () {
+          dropdownContent.style.display = "none"; // Hide when mouse leaves
+        }, 500);
+      });
+    });
+  </script>
+
+  <script>
+    // Modal functionality
+    const modal = document.getElementById('appointmentModal')
+    const closeModal = document.querySelector('.close-modal')
+    
+    // Close modal when clicking X or outside
+    closeModal.addEventListener('click', () => {
+      modal.style.display = 'none'
+    })
+    
+    window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.style.display = 'none'
+      }
+    })
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.style.display === 'block') {
+        modal.style.display = 'none'
+      }
+    })
+    
+    // Function to show appointment details in modal
+    function showAppointmentDetails(appointment) {
+      document.getElementById('modal-doctor').textContent = appointment.doctor_name
+      document.getElementById('modal-specialty').textContent = appointment.doctor_speciality
+      document.getElementById('modal-date').textContent = appointment.date
+      document.getElementById('modal-status').textContent = 
+        new Date(appointment.date) > new Date() ? 'Upcoming' : 'Completed'
+      document.getElementById('modal-comments').textContent = 
+        appointment.comments || 'No comments available for this appointment'
+      
+      modal.style.display = 'block'
+    }
+    
+    // Function to load appointments
+    async function loadAppointments() {
+      try {
+        // Show loading states
+        document.getElementById('loading-upcoming').style.display = 'flex'
+        document.getElementById('loading-past').style.display = 'flex'
+        
+        const response = await fetch('/api/appointments')
+        if (!response.ok) {
+          throw new Error('Failed to fetch appointments')
+        }
+        
+        const data = await response.json()
+        
+        const upcomingContainer = document.getElementById('upcoming-appointments')
+        const pastContainer = document.getElementById('past-appointments')
+        const hiddenPastContainer = document.getElementById('hidden-past-appointments')
+        const seeMoreButton = document.querySelector('.see-more')
+
+        // Clear loading states
+        document.getElementById('loading-upcoming').style.display = 'none'
+        document.getElementById('loading-past').style.display = 'none'
+        
+        // Clear previous content
+        upcomingContainer.innerHTML = ''
+        pastContainer.innerHTML = ''
+        hiddenPastContainer.innerHTML = ''
+
+        let pastAppointmentsCount = 0
+
+        // Sort appointments by date (newest first)
+        data.sort((a, b) => new Date(b.date) - new Date(a.date))
+
+        data.forEach(appointment => {
+          const appointmentCard = document.createElement('div')
+          appointmentCard.className = 'appointment-card'
+          appointmentCard.setAttribute('data-id', appointment.appointment_id)
+          
+          appointmentCard.innerHTML = `
+            <h3>${appointment.doctor_name} - ${appointment.doctor_speciality}</h3>
+            <p class="date">${appointment.date}</p>
+            <div class="buttons">
+              ${new Date(appointment.date) > new Date() ? 
+                '<button class="cancel-appointment">Cancel Appointment</button>' : ''}
+              <button class="view-details">View Details</button>
+            </div>
+          `
+
+          const isUpcoming = new Date(appointment.date) > new Date()
+          if (isUpcoming) {
+            upcomingContainer.appendChild(appointmentCard)
+          } else {
+            pastAppointmentsCount++
+            if (pastAppointmentsCount <= 3) {
+              pastContainer.appendChild(appointmentCard)
+            } else {
+              hiddenPastContainer.appendChild(appointmentCard)
+            }
+          }
+        })
+
+        // Show/hide "See More" button
+        seeMoreButton.style.display = pastAppointmentsCount > 3 ? 'inline-block' : 'none'
+
+        // Add event listeners to cancel buttons
+        document.querySelectorAll('.cancel-appointment').forEach(button => {
+          button.addEventListener('click', async (event) => {
+            const appointmentCard = event.target.closest('.appointment-card')
+            const appointmentId = appointmentCard.getAttribute('data-id')
+            
+            try {
+              const response = await fetch(`/api/appointments/${appointmentId}`, {
+                method: 'DELETE',
+              })
+              
+              if (response.ok) {
+                appointmentCard.remove()
+              } else {
+                alert("Failed to cancel the appointment. Please try again.")
+              }
+            } catch (error) {
+              console.error('Error canceling appointment:', error)
+              alert("An error occurred while canceling the appointment.")
+            }
+          })
+        })
+
+        // Add event listeners for view details buttons
+        document.querySelectorAll('.view-details').forEach(button => {
+          button.addEventListener('click', (event) => {
+            const appointmentCard = event.target.closest('.appointment-card')
+            const appointmentId = appointmentCard.getAttribute('data-id')
+            const appointment = data.find(a => a.appointment_id == appointmentId)
+            showAppointmentDetails(appointment)
+          })
+        })
+
+      } catch (error) {
+        console.error('Error fetching appointments:', error)
+        document.getElementById('loading-upcoming').style.display = 'none'
+        document.getElementById('loading-past').style.display = 'none'
+        
+        // Show error state
+        const upcomingContainer = document.getElementById('upcoming-appointments')
+        const pastContainer = document.getElementById('past-appointments')
+        
+        upcomingContainer.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1">
+            <br>
+            <h3>No Appointments For Now!</h3>
+          </div>
+        `
+        
+        pastContainer.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1">
+            <h3> No Appointments In The Past! <h3>
+          </div>
+        `
+      }
+    }
+
+    // Function to show hidden past appointments when "See More" is clicked
+    function showMorePastAppointments() {
+      const hiddenPastAppointments = document.querySelector('.hidden-past-appointments')
+      const seeMoreButton = document.querySelector('.see-more')
+
+      hiddenPastAppointments.classList.add('show')
+      seeMoreButton.style.display = 'none'
+    }
+
+    // Load appointments when the page loads
+    document.addEventListener('DOMContentLoaded', loadAppointments)
+
+    // Generate avatar based on username
+    
+  </script>
+</body>
+</html>

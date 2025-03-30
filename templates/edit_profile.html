@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - MediConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #f43f5e;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --gray-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --nav-bg: #072146;
+            --nav-gradient: linear-gradient(135deg, #072146 0%, #00172D 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Enhanced Navigation */
+        .header-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: var(--nav-gradient);
+        }
+
+        .main-nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .brand img {
+            height: 50px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .main-nav a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .main-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .main-nav a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Enhanced User Profile */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+            object-fit: cover;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-role {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        .user-profile:hover .user-avatar {
+            transform: scale(1.1);
+        }
+
+        /* Enhanced Dropdown */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            min-width: 200px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            padding: 10px 0;
+            margin-top: 15px;
+            z-index: 100;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .dropdown-content::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            right: 15px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: transparent transparent white transparent;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-content a:hover {
+            background: #f8f9fa;
+            padding-left: 25px;
+            color: var(--primary);
+        }
+
+        .dropdown-content a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+
+        /* Edit Profile Header */
+        .edit-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .edit-header h1 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .edit-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Edit Profile Form */
+        .edit-form {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-section h2 i {
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.05rem;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .form-group input[disabled] {
+            background-color: #f1f5f9;
+            color: var(--gray);
+            cursor: not-allowed;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--nav-gradient);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--gray-light);
+            color: var(--dark);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-light);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 0;
+            margin-top: 80px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 50px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .footer-about {
+            margin-bottom: 25px;
+            color: var(--gray-light);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .footer-links h4 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .footer-social a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .footer-social a:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding: 25px 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--gray-light);
+            font-size: 0.95rem;
+            margin-top: 60px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .slide-up {
+            opacity: 0;
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .edit-header h1 {
+                font-size: 2rem;
+            }
+
+            .edit-form {
+                padding: 30px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+        .initials-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background-color: #2667cc;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      text-transform: uppercase;
+    }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Navigation -->
+    <div class="header-container">
+        <nav class="main-nav">
+            <!-- Logo Section -->
+            <a href="{{ url_for('Dashboard') }}" class="brand">
+                <img src="{{ url_for('static', filename='logo1.png') }}" alt="MediConnect">
+                <span>MediConnect</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <div class="nav-links">
+                <a href="{{ url_for('Dashboard') }}">
+                    <i class="bi bi-speedometer2"></i>Dashboard
+                </a>
+                <a href="{{ url_for('Patient_Appointments') }}">
+                    <i class="bi bi-calendar-check"></i>Appointments
+                </a>
+                <a href="{{ url_for('Book_Appointment') }}">
+                    <i class="bi bi-plus-circle"></i>Book
+                </a>
+                <a href="{{ url_for('Search_Doctor') }}">
+                    <i class="bi bi-search"></i>Find Doctors
+                </a>
+            </div>
+
+            <!-- User Profile -->
+            <div class="dropdown">
+                <div class="user-profile">
+                    <div class="initials-avatar" id="userAvatar">US</div>
+                    <div class="user-info">
+                        <span class="user-name">{{ data['first_name'] }}</span>
+                    </div>
+                    <i class="bi bi-chevron-down" style="color: rgba(255,255,255,0.6);"></i>
+                </div>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('Profile') }}">
+                        <i class="bi bi-person"></i>Profile
+                    </a>
+                    <a href="{{ url_for('Logout') }}">
+                        <i class="bi bi-box-arrow-right"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="edit-header fade-in">
+            <h1>Edit Your Profile</h1>
+            <p>Update your personal and contact information to keep your profile current</p>
+        </div>
+
+        <form action="/Edit_Profile" method="POST" class="edit-form slide-up">
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <h2><i class="bi bi-person-fill"></i> Personal Information</h2>
+                
+                <div class="form-group">
+                    <label for="patient-name">Full Name</label>
+                    <input type="text" id="patient-name" value="{{ data['first_name'] }} {{ data['last_name'] }}" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" value="{{ data['email'] }}" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ph_number">Phone Number</label>
+                    <input type="tel" id="ph_number" name="ph_number" value="{{ data['ph_number'] }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" value="{{ data['address'] }}">
+                </div>
+            </div>
+
+            <!-- Emergency Contact Section -->
+            <div class="form-section">
+                <h2><i class="bi bi-telephone-plus-fill"></i> Emergency Contact</h2>
+                
+                <div class="form-group">
+                    <label for="em_name">Contact Name</label>
+                    <input type="text" id="em_name" name="em_name" value="{{ data['em_name'] }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="em_phone">Phone Number</label>
+                    <input type="tel" id="em_phone" name="em_phone" value="{{ data['em_phone'] }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="em_rel">Relationship</label>
+                    <select id="em_rel" name="em_rel">
+                        <option value="Spouse" {% if data['em_rel'] == 'Spouse' %} selected {% endif %}>Spouse</option>
+                        <option value="Parent" {% if data['em_rel'] == 'Parent' %} selected {% endif %}>Parent</option>
+                        <option value="Sibling" {% if data['em_rel'] == 'Sibling' %} selected {% endif %}>Sibling</option>
+                        <option value="Friend" {% if data['em_rel'] == 'Friend' %} selected {% endif %}>Friend</option>
+                        <option value="Other" {% if data['em_rel'] == 'Other' %} selected {% endif %}>Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-outline">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <a href="#" class="footer-logo">MediConnect</a>
+                <p class="footer-about">Connecting patients with healthcare providers seamlessly for better health outcomes.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('Dashboard') }}"><i class="bi bi-chevron-right"></i>Dashboard</a></li>
+                    <li><a href="{{ url_for('Patient_Appointments') }}"><i class="bi bi-chevron-right"></i>Appointments</a></li>
+                    <li><a href="{{ url_for('Book_Appointment') }}"><i class="bi bi-chevron-right"></i>Book Appointment</a></li>
+                    <li><a href="{{ url_for('Search_Doctor') }}"><i class="bi bi-chevron-right"></i>Find a Doctor</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i>Help Center</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i>Privacy Policy</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i>Terms of Service</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i>Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 MediConnect. All rights reserved.
+        </div>
+    </footer>
+    <script>
+        let dropdownTimeout;
+      
+        document.addEventListener("DOMContentLoaded", function () {
+          const dropdown = document.querySelector(".dropdown");
+          const dropdownContent = document.querySelector(".dropdown-content");
+      
+          dropdown.addEventListener("mouseenter", function () {
+            clearTimeout(dropdownTimeout); // Clear the timeout if user hovers back
+            dropdownContent.style.display = "block"; // Show dropdown
+          });
+      
+          dropdown.addEventListener("mouseleave", function () {
+            dropdownTimeout = setTimeout(function () {
+              dropdownContent.style.display = "none"; // Hide dropdown after delay
+            }, 500); // Adjust time in milliseconds (e.g., 500ms = 0.5s)
+          });
+      
+          dropdownContent.addEventListener("mouseenter", function () {
+            clearTimeout(dropdownTimeout); // Keep it visible when inside dropdown
+          });
+      
+          dropdownContent.addEventListener("mouseleave", function () {
+            dropdownTimeout = setTimeout(function () {
+              dropdownContent.style.display = "none"; // Hide when mouse leaves
+            }, 500);
+          });
+        });
+      </script>
+
+    <script>
+        
+
+        // Animation on scroll
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.slide-up');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+
+        // Cancel button functionality
+        document.querySelector('.btn-outline').addEventListener('click', function() {
+            window.location.href = "{{ url_for('Profile') }}";
+        });
+    </script>
+</body>
+</html>

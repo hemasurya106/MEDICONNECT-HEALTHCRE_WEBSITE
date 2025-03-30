@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data['first_name'] }}'s Profile - MediConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #f43f5e;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --gray-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --nav-bg: #072146;
+            --nav-gradient: linear-gradient(135deg, #072146 0%, #00172D 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Enhanced Navigation */
+        .header-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--dark) 0%, #00172D 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+        .main-nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: white;
+                font-weight: 600;
+                font-size: 1.5rem;
+                gap: 10px;
+        }
+
+        .brand img {
+      height: 40px;
+      transition: var(--transition);
+    }
+    .brand:hover img {
+      transform: rotate(-5deg);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      flex-grow: 1;
+      justify-content: center;
+    }
+
+        .main-nav a {
+            color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+        }
+
+        .main-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .main-nav a.active {
+            background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 15px rgba(58, 134, 255, 0.4);
+        }
+        .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+        /* Enhanced User Profile */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+            object-fit: cover;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-role {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        .user-profile:hover .user-avatar {
+            transform: scale(1.1);
+        }
+
+        /* Enhanced Dropdown */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            min-width: 200px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            padding: 10px 0;
+            margin-top: 15px;
+            z-index: 100;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .dropdown-content::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            right: 15px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: transparent transparent white transparent;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-content a:hover {
+            background: #f8f9fa;
+            padding-left: 25px;
+            color: var(--primary);
+        }
+
+        .dropdown-content a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .profile-header h1 {
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-header p {
+            color: var(--gray);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 40px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            position: relative;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-banner {
+            height: 180px;
+            background: var(--nav-gradient);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23000' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .profile-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 6px solid white;
+            object-fit: cover;
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            z-index: 2;
+        }
+
+        .profile-card:hover .profile-avatar {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .profile-content {
+            padding: 90px 40px 40px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark);
+            letter-spacing: -0.5px;
+        }
+
+        .profile-title {
+            color: var(--gray);
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 35px;
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 40px;
+            background: var(--gray-light);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-bio {
+            color: var(--dark);
+            margin-bottom: 35px;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: var(--nav-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--gray-light);
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-light);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-color: transparent;
+        }
+
+        /* Profile Details Grid */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .detail-card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+
+        .detail-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-card h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .detail-card h3 i {
+            font-size: 1.4rem;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detail-item {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--dark);
+            min-width: 160px;
+            font-size: 1.05rem;
+        }
+
+        .detail-value {
+            color: var(--gray);
+            flex-grow: 1;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 0;
+            margin-top: 80px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 50px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .footer-about {
+            margin-bottom: 25px;
+            color: var(--gray-light);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .footer-links h4 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+        .initials-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #1d4ed8;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: 2px solid rgba(255,255,255,0.2);
+  text-transform: uppercase;
+}
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .footer-social a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .footer-social a:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding: 25px 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--gray-light);
+            font-size: 0.95rem;
+            margin-top: 60px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .slide-up {
+            opacity: 0;
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-nav {
+                padding: 0 20px;
+                height: 70px;
+            }
+            
+            .nav-links {
+                gap: 25px;
+            }
+            
+            .main-nav a {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-stats {
+                flex-wrap: wrap;
+            }
+
+            .stat-item:not(:last-child)::after {
+                display: none;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .profile-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .profile-header p {
+                font-size: 1rem;
+            }
+
+            .profile-name {
+                font-size: 1.8rem;
+            }
+
+            .profile-title {
+                font-size: 1rem;
+            }
+
+            .detail-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .detail-item {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .detail-label {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Existing head content -->
+  <style>
+    /* Add loading animation styles */
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading svg {
+      width: 100px;
+      height: 100px;
+    }
+
+    #back {
+      fill: none;
+      stroke: var(--light-gray);
+      stroke-width: 2;
+    }
+
+    #front {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 2;
+      stroke-dasharray: 142;
+      stroke-dashoffset: 142;
+      animation: draw 1.5s infinite linear;
+    }
+
+    @keyframes draw {
+      from {
+        stroke-dashoffset: 142;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Add fade-out animation */
+    .loading.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading" id="loading">
+    <svg width="64px" height="48px">
+      <polyline points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24" id="back"></polyline>
+      <polyline points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24" id="front"></polyline>
+    </svg>
+  </div>
+
+  <!-- Rest of your existing body content -->
+
+  <script>
+    // Add this JavaScript at the end of your existing script
+    window.addEventListener('load', function() {
+      const loading = document.getElementById('loading');
+      // Add hide class after 500ms to allow initial animation
+      setTimeout(() => {
+        loading.classList.add('hide');
+        // Remove element after animation completes
+        setTimeout(() => {
+          loading.remove();
+        }, 500);
+      }, 500);
+    });
+  </script>
+</body>
+</html>
+<body>
+    <!-- Enhanced Navigation -->
+    <!-- Enhanced Navigation -->
+<div class="header-container">
+    <nav class="main-nav">
+        <!-- Logo Section -->
+        <a href="{{ url_for('Dashboard') }}" class="brand">
+            <img src="{{ url_for('static', filename='logo1.png') }}" alt="MediConnect">
+            <span>MediConnect</span>
+        </a>
+
+        <!-- Navigation Links -->
+        <div class="nav-links">
+            <a href="{{ url_for('Dashboard') }}">
+                <i class="bi bi-speedometer2"></i>Dashboard
+            </a>
+            <a href="{{ url_for('Patient_Appointments') }}">
+                <i class="bi bi-calendar-check"></i>Appointments
+            </a>
+            <a href="{{ url_for('Book_Appointment') }}">
+                <i class="bi bi-plus-circle"></i>Book
+            </a>
+            <a href="{{ url_for('Search_Doctor') }}" >
+                <i class="bi bi-search"></i> Find Doctors
+            </a>
+        </div>
+
+        <!-- User Profile -->
+        <div class="dropdown">
+            <div class="user-profile">
+              <div class="initials-avatar" id="userAvatar">US</div>
+              <div class="user-info">
+                <span class="user-name"> {{ data['first_name'] }} </span>
+              </div>
+              <i class="bi bi-chevron-down" style="color: rgba(255,255,255,0.6);"></i>
+            </div>
+            <div class="dropdown-content">
+              <a href="{{ url_for('Profile') }}">
+                <i class="bi bi-person"></i>Profile
+              </a>
+              <a href="{{ url_for('Logout') }}">
+                <i class="bi bi-box-arrow-right"></i>Logout
+              </a>
+            </div>
+          </div>
+        </nav>
+</div>
+
+</div>
+</nav>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+<!-- Profile Header -->
+<div class="profile-header fade-in">
+<h1>My Profile</h1>
+<p>Your comprehensive health profile with all personal and medical information in one secure place</p>
+</div>
+
+<!-- Profile Card -->
+<div class="profile-card slide-up delay-1">
+<div class="profile-banner"></div>
+
+<div class="profile-content">
+<h2 class="profile-name">{{ data['first_name'] }} {{ data['last_name'] }}</h2>
+
+<div class="profile-stats">
+    <div class="stat-item">
+        <div class="stat-value">12</div>
+        <div class="stat-label">Appointments</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Prescriptions</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Health Records</div>
+    </div>
+</div>
+
+<p class="profile-bio">
+    {{ data['first_name'] }} is an active member of MediConnect with a complete health profile. 
+    Keeping your information up to date helps healthcare providers deliver better care.
+</p>
+
+<div class="profile-actions">
+    <form action="/Profile" method="POST">
+        <button type="submit" name="edit_profile" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i> Edit Profile
+        </button>
+    </form>
+</div>
+</div>
+</div>
+
+<!-- Profile Details Grid -->
+<div class="profile-grid">
+<!-- Personal Information -->
+<div class="detail-card slide-up delay-2">
+<h3><i class="bi bi-person-circle"></i> Personal Information</h3>
+
+<div class="detail-item">
+    <div class="detail-label">Full Name:</div>
+    <div class="detail-value">{{ data['first_name'] }} {{ data['last_name'] }}</div>
+</div>
+
+<div class="detail-item">
+    <div class="detail-label">Date of Birth:</div>
+    <div class="detail-value">{{ data['dob'] }}</div>
+</div>
+
+<div class="detail-item">
+    <div class="detail-label">Gender:</div>
+    <div class="detail-value">{{ data['gender'] }}</div>
+</div>
+
+<div class="detail-item">
+    <div class="detail-label">Phone:</div>
+    <div class="detail-value">{{ data['ph_number'] }}</div>
+</div>
+
+<div class="detail-item">
+    <div class="detail-label">Address:</div>
+    <div class="detail-value">{{ data['address'] }}</div>
+</div>
+</div>
+
+<!-- Health Information -->
+<div class="detail-card slide-up delay-3">
+<h3><i class="bi bi-heart-pulse"></i> Health Information</h3>
+
+<div class="detail-item">
+    <div class="detail-label">Allergies:</div>
+    <div class="detail-value">{{ data['allergies'] or 'None recorded' }}</div>
+</div>
+
+<div class="detail-item">
+    <div class="detail-label">Conditions:</div>
+    <div class="detail-value">{{ data['ch_conditions'] or 'None recorded' }}</div>
+</div>
+
+<div class="detail-item">
+    <div class="detail-label">Surgeries:</div>
+    <div class="detail-value">{{ data['surgeries'] or 'None recorded' }}</div>
+</div>
+
+<div class="detail-item">
+    <div class="detail-label">Medications:</div>
+    <div class="detail-value">{{ data['medications'] or 'None recorded' }}</div>
+</div>
+</div>
+
+<!-- Emergency Contacts -->
+<div class="detail-card slide-up delay-4">
+<h3><i class="bi bi-telephone-plus"></i> Emergency Contacts</h3>
+
+<div class="detail-item">
+    <div class="detail-label">Primary Contact:</div>
+    <div class="detail-value">{{ data['em_name'] or 'Not specified' }}</div>
+</div>
+
+<div class="detail-item">
+    <div class="detail-label">Relationship:</div>
+    <div class="detail-value">{{ data['em_rel'] or 'Not specified' }}</div>
+</div>
+
+<div class="detail-item">
+    <div class="detail-label">Phone:</div>
+    <div class="detail-value">{{ data['em_phone'] or 'Not specified' }}</div>
+</div>
+
+</div>
+
+
+</div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+<div class="footer-container">
+<div class="footer-about">
+<a href="#" class="footer-logo">MediConnect</a>
+<p class="footer-about">Revolutionizing healthcare through seamless connections between patients and providers for optimal health outcomes.</p>
+<div class="footer-social">
+    <a href="#"><i class="bi bi-facebook"></i></a>
+    <a href="#"><i class="bi bi-twitter-x"></i></a>
+    <a href="#"><i class="bi bi-instagram"></i></a>
+    <a href="#"><i class="bi bi-linkedin"></i></a>
+</div>
+</div>
+
+<div class="footer-links">
+<h4>Quick Links</h4>
+<ul>
+    <li><a href="{{ url_for('Dashboard') }}"><i class="bi bi-chevron-right"></i>Dashboard</a></li>
+    <li><a href="{{ url_for('Patient_Appointments') }}"><i class="bi bi-chevron-right"></i>Appointments</a></li>
+    <li><a href="{{ url_for('Book_Appointment') }}"><i class="bi bi-chevron-right"></i>Book Appointment</a></li>
+    <li><a href="{{ url_for('Search_Doctor') }}"><i class="bi bi-chevron-right"></i>Find a Doctor</a></li>
+</ul>
+</div>
+
+<div class="footer-links">
+<h4>Support</h4>
+<ul>
+    <li><a href="#"><i class="bi bi-chevron-right"></i>Help Center</a></li>
+    <li><a href="#"><i class="bi bi-chevron-right"></i>Privacy Policy</a></li>
+    <li><a href="#"><i class="bi bi-chevron-right"></i>Terms of Service</a></li>
+    <li><a href="#"><i class="bi bi-chevron-right"></i>Contact Us</a></li>
+</ul>
+</div>
+</div>
+
+<div class="copyright">
+&copy; 2025 MediConnect. All rights reserved.
+</div>
+</footer>
+<script>
+    let dropdownTimeout;
+  
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdown = document.querySelector(".dropdown");
+      const dropdownContent = document.querySelector(".dropdown-content");
+  
+      dropdown.addEventListener("mouseenter", function () {
+        clearTimeout(dropdownTimeout); // Clear the timeout if user hovers back
+        dropdownContent.style.display = "block"; // Show dropdown
+      });
+  
+      dropdown.addEventListener("mouseleave", function () {
+        dropdownTimeout = setTimeout(function () {
+          dropdownContent.style.display = "none"; // Hide dropdown after delay
+        }, 500); // Adjust time in milliseconds (e.g., 500ms = 0.5s)
+      });
+  
+      dropdownContent.addEventListener("mouseenter", function () {
+        clearTimeout(dropdownTimeout); // Keep it visible when inside dropdown
+      });
+  
+      dropdownContent.addEventListener("mouseleave", function () {
+        dropdownTimeout = setTimeout(function () {
+          dropdownContent.style.display = "none"; // Hide when mouse leaves
+        }, 500);
+      });
+    });
+  </script>
+<script>
+// Toggle dropdown menu
+document.querySelector('.dropdown').addEventListener('click', function(e) {
+e.stopPropagation();
+document.querySelector('.dropdown-content').classList.toggle('show');
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function() {
+const dropdown = document.querySelector('.dropdown-content');
+if (dropdown.classList.contains('show')) {
+dropdown.classList.remove('show');
+}
+});
+
+// Animation on scroll
+const animateOnScroll = function() {
+const elements = document.querySelectorAll('.slide-up');
+
+elements.forEach(element => {
+const elementPosition = element.getBoundingClientRect().top;
+const windowHeight = window.innerHeight;
+
+if (elementPosition < windowHeight - 100) {
+    element.style.opacity = '1';
+    element.style.transform = 'translateY(0)';
+}
+});
+};
+
+window.addEventListener('scroll', animateOnScroll);
+window.addEventListener('load', animateOnScroll);
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+anchor.addEventListener('click', function(e) {
+e.preventDefault();
+document.querySelector(this.getAttribute('href')).scrollIntoView({
+    behavior: 'smooth'
+});
+});
+});
+</script>
+</body>
+</html>
